@@ -11,14 +11,20 @@ steps:
       scriptLocation: inlineScript
       workingDirectory: $(System.DefaultWorkingDirectory)
       inlineScript: |
-        set -e
+  
+        set -euo pipefail
 
-        echo "Azure CLI version:"
+        echo "OS:"
+        cat /etc/os-release
+
+        echo "Azure CLI:"
         az version
 
-        echo "Python version:"
+        echo "Azure CLI Python:"
         az --version
 
-        echo "Installing Azure ML extension with debug logging..."
-
+        echo "Installing Azure ML extension:"
         az extension add --name ml --yes --debug 2>&1 | tee aml-extension-install.log
+
+        az extension show --name ml
+        az ml -h
