@@ -30,7 +30,7 @@ variables:
 trigger: none
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: ubuntu-22.04
 
 # resources:    #as my template are in same repo, I don't need to define resources. If they were in different repo, I would have to define them here.
 #   repositories:
