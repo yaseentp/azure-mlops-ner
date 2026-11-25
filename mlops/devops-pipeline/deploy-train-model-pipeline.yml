@@ -1,7 +1,7 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
-name: deploy-model-training-pipeline
+name: deploy-model-training-pipeline-1
 
 parameters:
   - name: skipEnvironmentRegistration
