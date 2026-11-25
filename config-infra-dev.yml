@@ -1,0 +1,47 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+
+# Dev environment
+variables:
+  # Global
+  ap_vm_image: ubuntu-22.04
+
+  namespace: mlopsv2 #Note: A namespace with many characters will cause storage account creation to fail due to storage account names having a limit of 24 characters.
+  postfix: 0001
+  location: westus
+  environment: dev
+  enable_aml_computecluster: true
+  enable_monitoring: false
+  enable_container_registry: true
+  
+  # Tags
+  tag_cost_center: ''
+  tag_managed_by: bicep-ado
+  
+  # Endpoints
+  oep: online-endpoint
+  bep: batch-endpoint
+
+  # Azure DevOps
+  ado_service_connection_rg: Azure-ARM-Prod
+  ado_service_connection_aml_ws: Azure-ARM-Prod
+
+  # DO NOT TOUCH
+
+  # For pipeline reference
+  resource_group: ysn-resource #$(namespace)-$(postfix)$(environment)
+  aml_workspace: mlw-dev202611231949 #mlw-$(namespace)-$(postfix)$(environment)
+  application_insights: mlwdev20insights987e4aa1
+  key_vault: mlwdev20keyvaultb8289ff4
+  container_registry: 757aeab49dfd4a1b85c8c0dd5e4fb733
+  storage_account: mlwdev20storage171ffe09b
+  #vnet_name: vnet-$(namespace)-$(postfix)$(environment)
+
+  # For terraform reference
+  terraform_version: 1.10.0
+  terraform_workingdir: infrastructure/terraform
+  terraform_st_location: $(location)
+  terraform_st_resource_group: rg-$(namespace)-$(postfix)$(environment)-tf
+  terraform_st_storage_account: st$(namespace)$(postfix)$(environment)tf
+  terraform_st_container_name: default
+  terraform_st_key: mlops-tab

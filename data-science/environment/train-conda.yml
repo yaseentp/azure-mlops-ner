@@ -1,0 +1,22 @@
+channels:
+  - conda-forge
+
+dependencies:
+  - python=3.10
+  - pip
+
+  - pip:
+      - mldesigner
+      - --extra-index-url https://download.pytorch.org/whl/cu124
+      - torch==2.6.0+cu124
+      - transformers
+      - datasets
+      - evaluate
+      - seqeval
+      - accelerate
+      - numpy
+      - pyarrow
+      - safetensors
+      - psutil
+      - mlflow
+      - azureml-mlflow

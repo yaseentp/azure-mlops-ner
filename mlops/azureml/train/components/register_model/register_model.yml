@@ -1,0 +1,46 @@
+
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+name: register_emr_ner_model
+version: 1
+display_name: Register EMR NER Model
+description: Register the evaluated Hugging Face NER model in Azure ML
+
+inputs:
+  model_name:
+    type: string
+    default: emr-ner-model
+
+  model_path:
+    type: uri_folder
+
+  evaluation_output:
+    type: uri_folder
+
+  subscription_id:
+    type: string
+
+  resource_group:
+    type: string
+
+  workspace_name:
+    type: string
+
+outputs:
+  model_info_output_path:
+    type: uri_file
+
+code: .
+
+environment: azureml:model_registration-env:1
+  
+
+command: >-
+  python register_model.py
+  --model_name ${{inputs.model_name}}
+  --model_path ${{inputs.model_path}}
+  --evaluation_output ${{inputs.evaluation_output}}
+  --subscription_id ${{inputs.subscription_id}}
+  --resource_group ${{inputs.resource_group}}
+  --workspace_name ${{inputs.workspace_name}}
+  --model_info_output_path ${{outputs.model_info_output_path}}

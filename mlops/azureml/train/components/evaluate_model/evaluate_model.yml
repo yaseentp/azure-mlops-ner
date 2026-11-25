@@ -1,0 +1,26 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+type: command
+name: evaluate_emr_ner
+version: 1
+display_name: Evaluate EMR NER Model
+description: Evaluate the trained EMR NER model on the test dataset
+
+code: .
+
+command: >-
+  python evaluate_model.py
+  --model_input ${{inputs.model_input}}
+  --prepared_dataset ${{inputs.prepared_dataset}}
+  --evaluation_output ${{outputs.evaluation_output}}
+
+environment: azureml:ner-train-env:3
+
+inputs:
+  model_input:
+    type: uri_folder
+  prepared_dataset:
+    type: uri_folder
+
+outputs:
+  evaluation_output:
+    type: uri_folder

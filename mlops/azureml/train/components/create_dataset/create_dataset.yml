@@ -1,0 +1,31 @@
+
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+
+type: command
+name: prepare_emr_dataset
+version: 1
+display_name: Prepare EMR Dataset
+description: Validate, tokenize and align EMR NER datasets ready for training
+
+inputs:
+  raw_data:
+    type: uri_folder
+
+  model_checkpoint:
+    type: string
+    default: google-bert/bert-base-uncased
+
+outputs:
+  prepared_dataset:
+    type: uri_folder
+
+code: .
+
+environment: azureml:ner-train-env:3
+
+command: >-
+  python create_dataset.py
+  --raw_data ${{inputs.raw_data}}
+  --prepared_dataset ${{outputs.prepared_dataset}}
+  --model_checkpoint ${{inputs.model_checkpoint}}
+

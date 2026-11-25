@@ -1,0 +1,68 @@
+
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+
+type: pipeline
+display_name: EMR NER Training Pipeline
+experiment_name: emr-ner-training
+
+inputs:
+  raw_data:
+    type: uri_folder
+    path: azureml:medical_ner-data@latest
+
+outputs:
+  prepared_dataset:
+    type: uri_folder
+
+  trained_model:
+    type: uri_folder
+  
+  model_info_output_path:
+    type: uri_file
+
+settings:
+  default_datastore: azureml:workspaceblobstore
+  default_compute: azureml:cpu-cluster
+  continue_on_step_failure: false
+  force_rerun: False
+
+jobs:
+  prepare_dataset:
+    component: ./components/create_dataset/create_dataset.yml
+    inputs:
+      raw_data: ${{parent.inputs.raw_data}}
+      model_checkpoint: google-bert/bert-base-uncased
+    outputs:
+      prepared_dataset: ${{parent.outputs.prepared_dataset}}
+
+  train_model:
+    component: ./components/train_model/train_model.yml
+    inputs:
+      prepared_dataset: ${{parent.jobs.prepare_dataset.outputs.prepared_dataset}}
+      learning_rate: 0.00002
+      batch_size: 8
+      epochs: 2
+      weight_decay: 0.01
+      model_checkpoint: google-bert/bert-base-uncased
+    outputs:
+      model_output: ${{parent.outputs.trained_model}}
+
+  evaluate_model:
+    component: ./components/evaluate_model/evaluate_model.yml
+    inputs:
+      model_input: ${{parent.jobs.train_model.outputs.model_output}}
+      prepared_dataset: ${{parent.jobs.prepare_dataset.outputs.prepared_dataset}}
+    outputs:
+      evaluation_output: ${{parent.outputs.evaluation_output}}
+
+  register_model:
+    component: ./components/register_model/register_model.yml
+    inputs:
+      model_name: emr-ner-model
+      model_path: ${{parent.jobs.train_model.outputs.model_output}}
+      evaluation_output: ${{parent.jobs.evaluate_model.outputs.evaluation_output}}
+      subscription_id: 74fc8c95-f03f-4fd4-b754-b5b19732e442
+      resource_group: ysn-resource
+      workspace_name: mlw-dev202611231949
+    outputs:
+      model_info_output_path: ${{parent.outputs.model_info_output_path}}

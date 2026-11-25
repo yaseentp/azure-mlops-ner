@@ -1,0 +1,14 @@
+$schema: https://azuremlschemas.azureedge.net/latest/data.schema.json
+
+# Supported paths include:
+# local: ./<path>
+# blob:  https://<account_name>.blob.core.windows.net/<container_name>/<path>
+# ADLS gen2: abfss://<file_system>@<account_name>.dfs.core.windows.net/<path>/
+# Datastore: azureml://datastores/<data_store_name>/paths/<path>
+
+# for this exmple, we will use a local path to the data folder, which is located in the data directory of this repo
+type: uri_folder
+name: medical_ner-data
+description: medical NER dataset
+version: 1
+path: ../../../data

@@ -1,0 +1,50 @@
+
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+
+type: command
+name: train_emr_ner
+version: 2
+display_name: Train EMR NER Model
+description: Fine-tune BERT for EMR named entity recognition
+
+inputs:
+  prepared_dataset:
+    type: uri_folder
+
+  learning_rate:
+    type: number
+    default: 0.00002
+
+  batch_size:
+    type: integer
+    default: 8
+
+  epochs:
+    type: integer
+    default: 2
+
+  weight_decay:
+    type: number
+    default: 0.01
+
+  model_checkpoint:
+    type: string
+    default: google-bert/bert-base-uncased
+
+outputs:
+  model_output:
+    type: uri_folder
+
+code: .
+
+environment: azureml:ner-train-env:3
+
+command: >-
+  python train_model.py
+  --prepared_dataset ${{inputs.prepared_dataset}}
+  --model_output ${{outputs.model_output}}
+  --learning_rate ${{inputs.learning_rate}}
+  --batch_size ${{inputs.batch_size}}
+  --epochs ${{inputs.epochs}}
+  --weight_decay ${{inputs.weight_decay}}
+  --model_checkpoint ${{inputs.model_checkpoint}}

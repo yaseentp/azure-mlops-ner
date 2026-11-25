@@ -1,0 +1,34 @@
+$schema: https://azuremlschemas.azureedge.net/latest/pipelineJob.schema.json
+
+type: pipeline
+display_name: uci_heart_classifier_prepare_data
+description: Prepare UCI Heart dataset
+
+# Pipeline-level input
+inputs:
+  input_data:
+    type: uri_folder
+
+# Pipeline-level outputs
+outputs:
+  prepared_data:
+    type: uri_folder
+
+  transformations_output:
+    type: custom_model
+
+settings:
+  default_compute: azureml:batch-cluster
+  default_datastore: azureml:workspaceblobstore
+
+jobs:
+  prepare_job:
+    type: command
+    component: ../components/prepare/prepare.yml
+
+    inputs:
+      data: ${{parent.inputs.input_data}}
+
+    outputs:
+      prepared_data: ${{parent.outputs.prepared_data}}
+      transformations_output: ${{parent.outputs.transformations_output}}
