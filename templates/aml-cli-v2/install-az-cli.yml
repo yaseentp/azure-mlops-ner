@@ -16,11 +16,9 @@ steps:
         echo "Azure CLI version:"
         az version
 
-        echo "Installing Azure ML CLI extension..."
-        az extension add --name ml --yes
+        echo "Python version:"
+        az --version
 
-        echo "Verifying Azure ML CLI extension..."
-        az extension show --name ml
+        echo "Installing Azure ML extension with debug logging..."
 
-        echo "Checking Azure ML commands..."
-        az ml -h
+        az extension add --name ml --yes --debug 2>&1 | tee aml-extension-install.log
