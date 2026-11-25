@@ -58,7 +58,7 @@ stages:
           #       mkdir "mlops-templates"
           # - checkout: mlops-templates
           #   path: s/templates/
-          - template: ../../templates/${{ variables.version }}/install-az-cli.yml
+        # - template: ../../templates/${{ variables.version }}/install-az-cli.yml
           - template: ../../templates/${{ variables.version }}/install-aml-cli.yml
           - template: ../../templates/${{ variables.version }}/connect-to-workspace.yml
           - ${{ if ne(parameters.skipEnvironmentRegistration, true) }}:
